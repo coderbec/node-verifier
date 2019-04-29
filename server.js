@@ -13,6 +13,9 @@ app.set('view engine', 'html');
 app.engine('html', ejs.renderFile);
 app.use(express.static(__dirname + '/public'));
 
+sdk.Configuration.basicAuthUserName = process.env.KEY; 
+sdk.Configuration.basicAuthPassword = process.env.SECRET; 
+
 var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
@@ -28,9 +31,6 @@ app.post("/register", urlencodedParser, function (req, res) {
     encoding: 'base32'
   });
   
-  sdk.Configuration.basicAuthUserName = process.env.KEY; 
-  sdk.Configuration.basicAuthPassword = process.env.SECRET; 
-
   let body = new sdk.SendMessagesRequest();
 
   body.messages = [];
@@ -38,10 +38,14 @@ app.post("/register", urlencodedParser, function (req, res) {
 
   body.messages[0].content = "Your MessageMedia security code is: "+token;
   body.messages[0].destinationNumber = req.body.mobile;
+  body.messages[0].metadata = {"token": token};
   
   controller.sendMessages(body, function(error, response, context) {
     if (!error){
-      res.render("verify");
+
+      var message = response.messages[0].messageId;
+      console.log("message ID" + message);
+      res.render("verify", {messageID: message});
     } else {
       res.send(error);
     }
@@ -51,13 +55,23 @@ app.post("/register", urlencodedParser, function (req, res) {
 
 app.post("/verify", urlencodedParser, function (req, res) {
   var userCode = req.body.code;
-  var tokenValidates = speakeasy.totp.verify({
-    secret: secret.base32,
-    encoding: 'base32',
-    token: userCode,
-    window: 6
+  var messageId = req.body.messageID;
+
+  var tokenValidates = false;
+
+  controller.getMessageStatus(messageId, function(error, response, context) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(response);
+      var token = response.metadata.token;
+      if (userCode == token ){
+        tokenValidates = true;
+      }
+    }
+    res.send(tokenValidates);
   });
-  res.send(tokenValidates);
+  
 });
 
 var listener = app.listen(process.env.PORT, function() {
