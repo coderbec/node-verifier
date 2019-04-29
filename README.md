@@ -25,3 +25,5 @@ To get started you need to:
 #### Resources
 * [API Documentation](https://developers.messagemedia.com/code/messages-api-documentation/)
 * [Speakeasy](https://github.com/speakeasyjs/speakeasy)
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/coderbec/node-verifier)
