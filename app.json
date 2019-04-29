@@ -3,5 +3,16 @@
     "description": "Sample Verifier with node.js",
     "repository": "https://github.com/coderbec/node-verifier",
     "logo": "",
-    "keywords": ["node", "express", "static"]
+    "keywords": ["node", "express", "static"],
+    "env": {
+        "KEY": {
+          "description": "MM API Key",
+          "generator": "secret"
+        },
+        "SECRET": {
+          "description": "MM API Secret",
+          "value": "secret"
+        }
+      }
+
   }
