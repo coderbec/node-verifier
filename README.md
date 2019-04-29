@@ -3,7 +3,7 @@
 ## 2FA vs Phone Number Verification
 Two-Factor Authentication (2FA) adds an extra layer of protection beyond the password. Typically in a 2FA Implementation a secret is generated for each user, which is then stored securely in a backend. This secret is then used to generate a token and the token is sent to the user. When a code is entered by the user this is then verified against the secret for that user. 
 
-A typical implementation of 2FA requires storage and processing in server side code, and authentication against user accounts. In the event that ~phone number verification~ is needed, a typical implementation of 2FA will not do. What is required is proof of ownership.
+A typical implementation of 2FA requires storage and processing in server side code, and authentication against user accounts. In the event that _phone number verification_ is needed, a typical implementation of 2FA will not do. What is required is proof of ownership.
 
 In this implementation, we have leveraged the 'meta data' feature of MessageMedia Messages API to remove the need for user secret generation and storage, making the functionality for phone number verification, 'out of the box'. Because MessageIDs are unique to each account, this makes the API Key and Secret a layer of security for this implementation. A messageID sent to the verification page is useless without the API KEY and SECRET that generated it. Thus, calling the Message by ID and verifying against the metadata provides phone number verification. 
 
