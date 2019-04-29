@@ -1,0 +1,7 @@
+{
+    "name": "Node.js Verifier Example",
+    "description": "Sample Verifier with node.js",
+    "repository": "https://github.com/coderbec/node-verifier",
+    "logo": "",
+    "keywords": ["node", "express", "static"]
+  }
